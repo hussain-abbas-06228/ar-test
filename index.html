@@ -14,12 +14,29 @@
       vr-mode-ui="enabled: false"
       arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
     >
+    <a-assets>
+        <img id="toilet" src="assets/toilet-.png" crossorigin="anonymous">
+        <img id="restaurant" src="assets/restaurant.png" crossorigin="anonymous">
+        <img id="gp" src="assets/golf-player.png" crossorigin="anonymous">
+        <img id="gf" src="assets/golf-field.png" crossorigin="anonymous">
+      </a-assets>
+
+
       <a-text
         value="Loc 1"
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.855041; longitude: 67.024227;"
       ></a-text>
+      <!-- toilets -->
+        <a-image
+            src="#toilet"
+            gps-entity-place="latitude: 24.855041; longitude: 67.024227;"
+        ></a-image>
+
+      
+
+
 
       <a-text
         value="Loc 2"
