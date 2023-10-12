@@ -169,21 +169,21 @@
 
 
 
-            const x = document.getElementById("demo");
-
-            function getLocation() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.watchPosition(showPosition);
-                } else {
-                    x.innerHTML = "Geolocation is not supported by this browser.";
-                }
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+            } else {
+                alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
             }
 
-            getLocation();
 
-            function showPosition(position) {
-            x.innerHTML = "Latitude: " + position.coords.latitude +
-            "<br>Longitude: " + position.coords.longitude;
+            function successFunction(position) {
+                var lat = position.coords.latitude;
+                var long = position.coords.longitude;
+                alert('Your latitude is :'+lat+' and longitude is '+long);
+            }
+
+            function errorFunction(error) {
+                console.log(error);
             }
 
 
