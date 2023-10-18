@@ -7,7 +7,7 @@
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.6.2/proj4.js"></script>
+    <script src="https://cdn.rawgit.com/ngokevin/kframe/csstrigger/components/layout/src/index.js"></script>
   </head>
 
   <body>
@@ -27,128 +27,136 @@
 
       <a-camera gps-camera rotation-reader></a-camera>
 
-      <!-- Define locations data -->
+      <!-- Function to open a URL in a new window -->
       <script>
-        const locations = [
-          {
-            type: "Concessions",
-            name: "Concessions Name",
-            latitude: 24.855041,
-            longitude: 67.024227,
-            url: "https://ar-js-org.github.io/AR.js-Docs/",
-          },
-          {
-            type: "Friends",
-            name: "Friend's Name",
-            latitude: 24.853982,
-            longitude: 67.024771,
-            url: "https://ar-js-org.github.io/AR.js-Docs/",
-          },
-          {
-            type: "Hospitality",
-            name: "Restroom",
-            latitude: 24.854645,
-            longitude: 67.027000,
-          },
-          {
-            type: "Participants",
-            name: "Participant's Name",
-            latitude: 24.855889,
-            longitude: 67.026156,
-            url: "https://ar-js-org.github.io/AR.js-Docs/",
-          },
-        ];
-
-        // Function to calculate distance
-        function calculateDistance(userLatitude, userLongitude, location) {
-          const wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
-          const webMercator =
-            "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs";
-
-          const userCoords = proj4(wgs84, webMercator, [userLongitude, userLatitude]);
-          const locationCoords = proj4(wgs84, webMercator, [location.longitude, location.latitude]);
-
-          const deltaX = locationCoords[0] - userCoords[0];
-          const deltaY = locationCoords[1] - userCoords[1];
-          const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-          return {
-            deltaX,
-            deltaY,
-            distance,
-          };
+        function openURLInNewWindow(url) {
+          window.open(url, '_blank');
         }
       </script>
 
-      <!-- Render locations based on data -->
+      <!-- Calculate distance and update text element -->
       <script>
-        const userLatitude = 37.7749; // Example user latitude
-        const userLongitude = -122.4194; // Example user longitude
+        function calculateAndDisplayDistance(locationEl, latitude, longitude) {
+          const cameraEl = document.querySelector('[gps-camera]');
+          const distanceTextEl = locationEl.querySelector('.distance-text');
 
-        locations.forEach((location, index) => {
-          // Create a unique ID for each location
-          const id = `location-${index}`;
+          function updateDistance() {
+            const cameraPosition = cameraEl.getAttribute('position');
+            const userLocation = new THREE.Vector3(
+              cameraPosition.x,
+              cameraPosition.y,
+              cameraPosition.z
+            );
 
-          // Calculate distance
-          const { deltaX, deltaY, distance } = calculateDistance(userLatitude, userLongitude, location);
+            const locationPosition = locationEl.getAttribute('position');
+            const targetLocation = new THREE.Vector3(
+              locationPosition.x,
+              locationPosition.y,
+              locationPosition.z
+            );
 
-          // Create location entity
-          const locationEntity = document.createElement("a-entity");
-          locationEntity.setAttribute("id", id);
-          locationEntity.setAttribute("gps-entity-place", {
-            latitude: location.latitude,
-            longitude: location.longitude,
-          });
-
-          // Location type-specific content
-          switch (location.type) {
-            case "Concessions":
-              locationEntity.innerHTML = `
-                <a-image src="#concessions-icon" onclick="openURLInNewWindow('${location.url}')"></a-image>
-                <a-text position="-1 1 0" value="${location.name}"></a-text>
-                <a-text class="distance-text" position="-1 -1 0" value="Distance: ${distance.toFixed(2)} meters"></a-text>
-              `;
-              break;
-
-            case "Friends":
-              locationEntity.innerHTML = `
-                <a-image src="#friends-icon" onclick="openURLInNewWindow('${location.url}')"></a-image>
-                <a-text position="-1 1 0" value="${location.name}"></a-text>
-                <a-text class="distance-text" position="-1 -1 0" value="Distance: ${distance.toFixed(2)} meters"></a-text>
-              `;
-              break;
-
-            case "Hospitality":
-              locationEntity.innerHTML = `
-                <a-image src="#hospitality-icon"></a-image>
-                <a-text position="-1 1 0" value="${location.name}"></a-text>
-                <a-text class="distance-text" position="-1 -1 0" value="Distance: ${distance.toFixed(2)} meters"></a-text>
-              `;
-              break;
-
-            case "Participants":
-              locationEntity.innerHTML = `
-                <a-image src="#participants-icon" onclick="openURLInNewWindow('${location.url}')"></a-image>
-                <a-text position="-1 1 0" value="${location.name}"></a-text>
-                <a-text class="distance-text" position="-1 -1 0" value="Distance: ${distance.toFixed(2)} meters"></a-text>
-              `;
-              break;
-
-            default:
-              // Default handling
-              locationEntity.innerHTML = `
-                <a-text value="Unknown Location"></a-text>
-              `;
+            const distance = userLocation.distanceTo(targetLocation);
+            distanceTextEl.setAttribute('value', 'Distance: ' + distance.toFixed(2) + ' meters');
           }
 
-          // Append the location entity to the scene
-          document.querySelector("a-scene").appendChild(locationEntity);
-        });
+          locationEl.addEventListener('gps-entity-place-added', updateDistance);
 
-        // Function to open a URL in a new window
-        function openURLInNewWindow(url) {
-          window.open(url, "_blank");
+          locationEl.setAttribute('gps-entity-place', {
+            latitude: latitude,
+            longitude: longitude
+          });
         }
+      </script>
+
+      <!-- Location for Concessions -->
+      <a-entity
+        layout="type: line; margin: 0.5"
+        look-at="[gps-camera]"
+        scale="50 50 50"
+        onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"
+      >
+        <!-- Concessions Icon -->
+        <a-image src="#concessions-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
+        <!-- Name of Establishment -->
+        <a-text position="-1 1 0" value="Concessions Name"></a-text>
+        <!-- Distance from User -->
+        <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
+      </a-entity>
+
+      <script>
+        calculateAndDisplayDistance(
+          document.querySelector('[gps-entity-place]'),
+          24.855041,
+          67.024227
+        );
+      </script>
+
+      <!-- Location for Friends -->
+      <a-entity
+        layout="type: line; margin: 0.5"
+        look-at="[gps-camera]"
+        scale="50 50 50"
+        onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"
+      >
+        <!-- Friends Icon -->
+        <a-image src="#friends-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
+        <!-- Name of Friend -->
+        <a-text position="-1 1 0" value="Friend's Name"></a-text>
+        <!-- Distance from User -->
+        <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
+      </a-entity>
+
+      <script>
+        calculateAndDisplayDistance(
+          document.querySelectorAll('[gps-entity-place]')[1],
+          24.853982,
+          67.024771
+        );
+      </script>
+
+      <!-- Location for Hospitality -->
+      <a-entity
+        layout="type: line; margin: 0.5"
+        look-at="[gps-camera]"
+        scale="50 50 50"
+      >
+        <!-- Hospitality Icon -->
+        <a-image src="#hospitality-icon"></a-image>
+        <!-- Type of Location (e.g., Restroom) -->
+        <a-text position="-1 1 0" value="Restroom"></a-text>
+        <!-- Distance from User -->
+        <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
+      </a-entity>
+
+      <script>
+        calculateAndDisplayDistance(
+          document.querySelectorAll('[gps-entity-place]')[2],
+          24.854645,
+          67.027000
+        );
+      </script>
+
+      <!-- Location for Participants -->
+      <a-entity
+        layout="type: line; margin: 0.5"
+        look-at="[gps-camera]"
+        scale="50 50 50"
+        onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"
+      >
+        <!-- Participants Icon -->
+        <a-image src="#participants-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
+        <!-- Name of Participant -->
+        <a-text position="-1 1 0" value="Participant's Name"></a-text>
+        <!-- Distance from User -->
+        <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
+      </a-entity>
+
+      <script>
+        calculateAndDisplayDistance(
+          document.querySelectorAll('[gps-entity-place]')[3],
+          24.855889,
+          67.026156
+        );
       </script>
     </a-scene>
   </body>
