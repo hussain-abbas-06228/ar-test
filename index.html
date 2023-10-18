@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE- edge" />
     <title>GeoAR.js demo</title>
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
@@ -24,97 +24,67 @@
 
       <a-camera gps-camera rotation-reader></a-camera>
 
-      <!-- Create an array of location coordinates -->
-      <a-entity id="locations" visible="false"></a-entity>
+      <!-- Location for Concessions -->
+      <a-entity
+        look-at="[gps-camera]"
+        scale="50 50 50"
+        gps-entity-place="latitude: 24.855041; longitude: 67.024227;"
+      >
+        <!-- Concessions Icon -->
+        <a-image src="#concessions-icon"></a-image>
+        <!-- Name of Establishment -->
+        <a-text value="Concessions Name"></a-text>
+        <!-- Hyperlink to Menu or Website -->
+        <a-link href="CONCESSIONS_MENU_OR_WEBSITE_URL">Menu or Website</a-link>
+        <!-- Distance from User -->
+        <a-text value="Distance from user: DISTANCE"></a-text>
+      </a-entity>
 
-      <script>
-        // Define location coordinates and types
-        const locations = [
-          { latitude: 24.855041, longitude: 67.024227, type: 'concessions' },
-          { latitude: 24.853982, longitude: 67.024771, type: 'friends' },
-          { latitude: 24.854645, longitude: 67.027000, type: 'hospitality' },
-          { latitude: 24.855889, longitude: 67.026156, type: 'participants' },
-          { latitude: 24.855312, longitude: 67.026306, type: 'concessions' },
-          { latitude: 24.857991, longitude: 67.024624, type: 'hospitality' },
-          { latitude: 24.859137, longitude: 67.030398, type: 'participants' },
-        ];
+      <!-- Location for Friends -->
+      <a-entity
+        look-at="[gps-camera]"
+        scale="50 50 50"
+        gps-entity-place="latitude: 24.853982; longitude: 67.024771;"
+      >
+        <!-- Friends Icon -->
+        <a-image src="#friends-icon"></a-image>
+        <!-- Name of Friend -->
+        <a-text value="Friend's Name"></a-text>
+        <!-- Hyperlink to Chat with Them -->
+        <a-link href="FRIENDS_CHAT_LINK">Chat with Friend</a-link>
+        <!-- Distance from User -->
+        <a-text value="Distance from user: DISTANCE"></a-text>
+      </a-entity>
 
-        const scene = document.querySelector('a-scene');
-        const locationsEntity = document.getElementById('locations');
+      <!-- Location for Hospitality -->
+      <a-entity
+        look-at="[gps-camera]"
+        scale="50 50 50"
+        gps-entity-place="latitude: 24.854645; longitude: 67.027000;"
+      >
+        <!-- Hospitality Icon -->
+        <a-image src="#hospitality-icon"></a-image>
+        <!-- Type of Location (e.g., Restroom) -->
+        <a-text value="Restroom"></a-text>
+        <!-- Distance from User -->
+        <a-text value="Distance from user: DISTANCE"></a-text>
+      </a-entity>
 
-        // Iterate through locations and create entities
-        locations.forEach((location, index) => {
-          // Create a random type if not provided
-          if (!location.type) {
-            const types = ['concessions', 'friends', 'hospitality', 'participants'];
-            location.type = types[Math.floor(Math.random() * types.length)];
-          }
-
-          // Create an entity for each location
-          const locationEntity = document.createElement('a-entity');
-          locationEntity.setAttribute('look-at', '[gps-camera]');
-          locationEntity.setAttribute('scale', '50 50 50');
-          locationEntity.setAttribute('gps-entity-place', {
-            latitude: location.latitude,
-            longitude: location.longitude,
-          });
-
-          // Create elements based on the location type
-          switch (location.type) {
-            case 'concessions':
-              locationEntity.innerHTML = `
-                <!-- Concessions Icon -->
-                <a-image src="#concessions-icon"></a-image>
-                <!-- Name of Establishment -->
-                <a-text value="Establishment Name"></a-text>
-                <!-- Hyperlink to Menu or Website -->
-                <a-link href="MENU_OR_WEBSITE_URL">Menu or Website</a-link>
-                <!-- Distance from User -->
-                <a-text value="Distance from user: DISTANCE"></a-text>
-              `;
-              break;
-
-            case 'friends':
-              locationEntity.innerHTML = `
-                <!-- Friends Icon -->
-                <a-image src="#friends-icon"></a-image>
-                <!-- Name of Friend -->
-                <a-text value="Friend's Name"></a-text>
-                <!-- Hyperlink to Chat with Them -->
-                <a-link href="CHAT_LINK">Chat with Friend</a-link>
-                <!-- Distance from User -->
-                <a-text value="Distance from user: DISTANCE"></a-text>
-              `;
-              break;
-
-            case 'hospitality':
-              locationEntity.innerHTML = `
-                <!-- Hospitality Icon -->
-                <a-image src="#hospitality-icon"></a-image>
-                <!-- Type of Location -->
-                <a-text value="Location Type (e.g., Restroom)"></a-text>
-                <!-- Distance from User -->
-                <a-text value="Distance from user: DISTANCE"></a-text>
-              `;
-              break;
-
-            case 'participants':
-              locationEntity.innerHTML = `
-                <!-- Participants Icon -->
-                <a-image src="#participants-icon"></a-image>
-                <!-- Name of Participant -->
-                <a-text value="Participant's Name"></a-text>
-                <!-- Link to Website or Profile -->
-                <a-link href="WEBSITE_OR_PROFILE_LINK">Visit Profile</a-link>
-                <!-- Distance from User -->
-                <a-text value="Distance from user: DISTANCE"></a-text>
-              `;
-              break;
-          }
-
-          locationsEntity.appendChild(locationEntity);
-        });
-      </script>
+      <!-- Location for Participants -->
+      <a-entity
+        look-at="[gps-camera]"
+        scale="50 50 50"
+        gps-entity-place="latitude: 24.855889; longitude: 67.026156;"
+      >
+        <!-- Participants Icon -->
+        <a-image src="#participants-icon"></a-image>
+        <!-- Name of Participant -->
+        <a-text value="Participant's Name"></a-text>
+        <!-- Link to Website or Profile -->
+        <a-link href="PARTICIPANTS_PROFILE_LINK">Visit Profile</a-link>
+        <!-- Distance from User -->
+        <a-text value="Distance from user: DISTANCE"></a-text>
+      </a-entity>
     </a-scene>
   </body>
 </html>
