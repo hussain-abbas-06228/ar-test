@@ -13,7 +13,7 @@
   <body>
     <a-scene
       cursor='rayOrigin: mouse; fuse: true; fuseTimeout: 0;'
-raycaster="objects: [gps-projected-entity-place];"
+      raycaster="objects: [gps-projected-entity-place];"
       vr-mode-ui="enabled: true"
       arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
     >
@@ -34,6 +34,35 @@ raycaster="objects: [gps-projected-entity-place];"
         }
       </script>
 
+      <!-- Function to calculate and display distance -->
+      <script>
+        window.addEventListener('load', () => {
+          const camera = document.querySelector('[camera]');
+          const marker = document.querySelector('[gps-entity-place]');
+          let check;
+
+          marker.addEventListener('markerFound', () => {
+            let cameraPosition = camera.object3D.position;
+            let markerPosition = marker.object3D.position;
+            let distance = cameraPosition.distanceTo(markerPosition);
+
+            check = setInterval(() => {
+              cameraPosition = camera.object3D.position;
+              markerPosition = marker.object3D.position;
+              distance = cameraPosition.distanceTo(markerPosition);
+
+              // Display the distance on the screen
+              const distanceText = document.querySelector('#distance-text');
+              distanceText.setAttribute('value', `Distance from user: ${distance.toFixed(2)} meters`);
+            }, 100);
+          });
+
+          marker.addEventListener('markerLost', () => {
+            clearInterval(check);
+          });
+        });
+      </script>
+
       <!-- Location for Concessions -->
       <a-entity
         layout="type: line; margin: 0.5"
@@ -46,8 +75,8 @@ raycaster="objects: [gps-projected-entity-place];"
         <a-image src="#concessions-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
         <!-- Name of Establishment -->
         <a-text position="-1 1 0" value="Concessions Name"></a-text>
-        <!-- Distance from User -->
-        <a-text position="-1 -1 0" value="Distance from user: DISTANCE"></a-text>
+        <!-- Display Distance from User -->
+        <a-text id="distance-text" position="-1 -1 0" value="Distance from user: DISTANCE"></a-text>
       </a-entity>
 
       <!-- Location for Friends -->
@@ -62,39 +91,8 @@ raycaster="objects: [gps-projected-entity-place];"
         <a-image src="#friends-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
         <!-- Name of Friend -->
         <a-text position="-1 1 0" value="Friend's Name"></a-text>
-        <!-- Distance from User -->
-        <a-text position="-1 -1 0" value="Distance from user: DISTANCE"></a-text>
-      </a-entity>
-
-      <!-- Location for Hospitality -->
-      <a-entity
-        layout="type: line; margin: 0.5"
-        look-at="[gps-camera]"
-        scale="50 50 50"
-        gps-entity-place="latitude: 24.854645; longitude: 67.027000;"
-      >
-        <!-- Hospitality Icon -->
-        <a-image src="#hospitality-icon"></a-image>
-        <!-- Type of Location (e.g., Restroom) -->
-        <a-text position="-1 1 0" value="Restroom"></a-text>
-        <!-- Distance from User -->
-        <a-text position="-1 -1 0" value="Distance from user: DISTANCE"></a-text>
-      </a-entity>
-
-      <!-- Location for Participants -->
-      <a-entity
-        layout="type: line; margin: 0.5"
-        look-at="[gps-camera]"
-        scale="50 50 50"
-        gps-entity-place="latitude: 24.855889; longitude: 67.026156;"
-        onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"
-      >
-        <!-- Participants Icon -->
-        <a-image src="#participants-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
-        <!-- Name of Participant -->
-        <a-text position="-1 1 0" value="Participant's Name"></a-text>
-        <!-- Distance from User -->
-        <a-text position="-1 -1 0" value="Distance from user: DISTANCE"></a-text>
+        <!-- Display Distance from User -->
+        <a-text id="distance-text" position="-1 -1 0" value="Distance from user: DISTANCE"></a-text>
       </a-entity>
     </a-scene>
   </body>
