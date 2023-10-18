@@ -2,11 +2,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE- edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE-edge" />
     <title>GeoAR.js demo</title>
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://cdn.rawgit.com/ngokevin/kframe/csstrigger/components/layout/src/index.js"></script>
   </head>
 
   <body>
@@ -26,6 +27,7 @@
 
       <!-- Location for Concessions -->
       <a-entity
+        layout="type: line; margin: 1.5"
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.855041; longitude: 67.024227;"
@@ -42,6 +44,7 @@
 
       <!-- Location for Friends -->
       <a-entity
+        layout="type: line; margin: 1.5"
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.853982; longitude: 67.024771;"
@@ -58,6 +61,7 @@
 
       <!-- Location for Hospitality -->
       <a-entity
+        layout="type: line; margin: 1.5"
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.854645; longitude: 67.027000;"
@@ -72,6 +76,7 @@
 
       <!-- Location for Participants -->
       <a-entity
+        layout="type: line; margin: 1.5"
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.855889; longitude: 67.026156;"
