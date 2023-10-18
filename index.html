@@ -25,19 +25,25 @@
 
       <a-camera gps-camera rotation-reader></a-camera>
 
+      <!-- Function to open a URL -->
+      <script>
+        function openURL(url) {
+          window.location.href = url;
+        }
+      </script>
+
       <!-- Location for Concessions -->
       <a-entity
         layout="type: line; margin: 0.5"
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.855041; longitude: 67.024227;"
+        onclick="openURL('CONCESSIONS_MENU_OR_WEBSITE_URL')"
       >
         <!-- Concessions Icon -->
-        <a-image src="#concessions-icon"></a-image>
+        <a-image src="#concessions-icon" onclick="openURL('CONCESSIONS_MENU_OR_WEBSITE_URL')"></a-image>
         <!-- Name of Establishment -->
         <a-text position="-1 1 0" value="Concessions Name"></a-text>
-        <!-- Hyperlink to Menu or Website -->
-        <a-link position="0 0 -1" href="CONCESSIONS_MENU_OR_WEBSITE_URL">Menu or Website</a-link>
         <!-- Distance from User -->
         <a-text position="-1 -1 0" value="Distance from user: DISTANCE"></a-text>
       </a-entity>
@@ -48,13 +54,12 @@
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.853982; longitude: 67.024771;"
+        onclick="openURL('FRIENDS_CHAT_LINK')"
       >
         <!-- Friends Icon -->
-        <a-image src="#friends-icon"></a-image>
+        <a-image src="#friends-icon" onclick="openURL('FRIENDS_CHAT_LINK')"></a-image>
         <!-- Name of Friend -->
         <a-text position="-1 1 0" value="Friend's Name"></a-text>
-        <!-- Hyperlink to Chat with Them -->
-        <a-link position="0 0 -1" href="FRIENDS_CHAT_LINK">Chat with Friend</a-link>
         <!-- Distance from User -->
         <a-text position="-1 -1 0" value="Distance from user: DISTANCE"></a-text>
       </a-entity>
@@ -80,13 +85,12 @@
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.855889; longitude: 67.026156;"
+        onclick="openURL('PARTICIPANTS_PROFILE_LINK')"
       >
         <!-- Participants Icon -->
-        <a-image src="#participants-icon"></a-image>
+        <a-image src="#participants-icon" onclick="openURL('PARTICIPANTS_PROFILE_LINK')"></a-image>
         <!-- Name of Participant -->
         <a-text position="-1 1 0" value="Participant's Name"></a-text>
-        <!-- Link to Website or Profile -->
-        <a-link position="0 0 -1" href="PARTICIPANTS_PROFILE_LINK">Visit Profile</a-link>
         <!-- Distance from User -->
         <a-text position="-1 -1 0" value="Distance from user: DISTANCE"></a-text>
       </a-entity>
