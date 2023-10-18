@@ -12,7 +12,9 @@
 
   <body>
     <a-scene
-      vr-mode-ui="enabled: false"
+      cursor='rayOrigin: mouse; fuse: true; fuseTimeout: 0;'
+raycaster="objects: [gps-projected-entity-place];"
+      vr-mode-ui="enabled: true"
       arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
     >
       <a-assets>
