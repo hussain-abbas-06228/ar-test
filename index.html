@@ -34,33 +34,32 @@
         }
       </script>
 
-      <!-- Function to calculate and display distance -->
+      <!-- Function to calculate and display the distance -->
       <script>
-        window.addEventListener('load', () => {
+        function calculateAndDisplayDistance(locationEntity) {
           const camera = document.querySelector('[camera]');
-          const marker = document.querySelector('[gps-entity-place]');
+          const location = locationEntity.querySelector('[gps-entity-place]');
           let check;
 
-          marker.addEventListener('markerFound', () => {
+          location.addEventListener('gps-entity-place-added', () => {
             let cameraPosition = camera.object3D.position;
-            let markerPosition = marker.object3D.position;
-            let distance = cameraPosition.distanceTo(markerPosition);
+            let locationPosition = location.object3D.position;
+            let distance = cameraPosition.distanceTo(locationPosition);
 
             check = setInterval(() => {
               cameraPosition = camera.object3D.position;
-              markerPosition = marker.object3D.position;
-              distance = cameraPosition.distanceTo(markerPosition);
+              locationPosition = location.object3D.position;
+              distance = cameraPosition.distanceTo(locationPosition);
 
-              // Display the distance on the screen
-              const distanceText = document.querySelector('#distance-text');
-              distanceText.setAttribute('value', `Distance from user: ${distance.toFixed(2)} meters`);
+              // Update the displayed distance in the text element
+              locationEntity.querySelector('.distance-text').setAttribute('value', 'Distance: ' + distance.toFixed(2) + ' meters');
             }, 100);
           });
 
-          marker.addEventListener('markerLost', () => {
+          location.addEventListener('gps-entity-place-removed', () => {
             clearInterval(check);
           });
-        });
+        }
       </script>
 
       <!-- Location for Concessions -->
@@ -75,9 +74,14 @@
         <a-image src="#concessions-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
         <!-- Name of Establishment -->
         <a-text position="-1 1 0" value="Concessions Name"></a-text>
-        <!-- Display Distance from User -->
-        <a-text id="distance-text" position="-1 -1 0" value="Distance from user: DISTANCE"></a-text>
+        <!-- Distance from User -->
+        <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
       </a-entity>
+
+      <!-- Calculate and display distance for Concessions -->
+      <script>
+        calculateAndDisplayDistance(document.querySelector('[gps-entity-place]'));
+      </script>
 
       <!-- Location for Friends -->
       <a-entity
@@ -91,9 +95,55 @@
         <a-image src="#friends-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
         <!-- Name of Friend -->
         <a-text position="-1 1 0" value="Friend's Name"></a-text>
-        <!-- Display Distance from User -->
-        <a-text id="distance-text" position="-1 -1 0" value="Distance from user: DISTANCE"></a-text>
+        <!-- Distance from User -->
+        <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
       </a-entity>
+
+      <!-- Calculate and display distance for Friends -->
+      <script>
+        calculateAndDisplayDistance(document.querySelectorAll('[gps-entity-place]')[1]);
+      </script>
+
+      <!-- Location for Hospitality -->
+      <a-entity
+        layout="type: line; margin: 0.5"
+        look-at="[gps-camera]"
+        scale="50 50 50"
+        gps-entity-place="latitude: 24.854645; longitude: 67.027000;"
+      >
+        <!-- Hospitality Icon -->
+        <a-image src="#hospitality-icon"></a-image>
+        <!-- Type of Location (e.g., Restroom) -->
+        <a-text position="-1 1 0" value="Restroom"></a-text>
+        <!-- Distance from User -->
+        <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
+      </a-entity>
+
+      <!-- Calculate and display distance for Hospitality -->
+      <script>
+        calculateAndDisplayDistance(document.querySelectorAll('[gps-entity-place]')[2]);
+      </script>
+
+      <!-- Location for Participants -->
+      <a-entity
+        layout="type: line; margin: 0.5"
+        look-at="[gps-camera]"
+        scale="50 50 50"
+        gps-entity-place="latitude: 24.855889; longitude: 67.026156;"
+        onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"
+      >
+        <!-- Participants Icon -->
+        <a-image src="#participants-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
+        <!-- Name of Participant -->
+        <a-text position="-1 1 0" value="Participant's Name"></a-text>
+        <!-- Distance from User -->
+        <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
+      </a-entity>
+
+      <!-- Calculate and display distance for Participants -->
+      <script>
+        calculateAndDisplayDistance(document.querySelectorAll('[gps-entity-place]')[3]);
+      </script>
     </a-scene>
   </body>
 </html>
