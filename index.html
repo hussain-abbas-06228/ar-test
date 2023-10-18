@@ -25,10 +25,10 @@
 
       <a-camera gps-camera rotation-reader></a-camera>
 
-      <!-- Function to open a URL -->
+      <!-- Function to open a URL in a new window -->
       <script>
-        function openURL(url) {
-          window.location.href = url;
+        function openURLInNewWindow(url) {
+          window.open(url, '_blank');
         }
       </script>
 
@@ -38,10 +38,10 @@
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.855041; longitude: 67.024227;"
-        onclick="openURL('CONCESSIONS_MENU_OR_WEBSITE_URL')"
+        onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"
       >
         <!-- Concessions Icon -->
-        <a-image src="#concessions-icon" onclick="openURL('google.com')"></a-image>
+        <a-image src="#concessions-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
         <!-- Name of Establishment -->
         <a-text position="-1 1 0" value="Concessions Name"></a-text>
         <!-- Distance from User -->
@@ -54,10 +54,10 @@
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.853982; longitude: 67.024771;"
-        onclick="openURL('FRIENDS_CHAT_LINK')"
+        onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"
       >
         <!-- Friends Icon -->
-        <a-image src="#friends-icon" onclick="openURL('FRIENDS_CHAT_LINK')"></a-image>
+        <a-image src="#friends-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
         <!-- Name of Friend -->
         <a-text position="-1 1 0" value="Friend's Name"></a-text>
         <!-- Distance from User -->
@@ -85,10 +85,10 @@
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.855889; longitude: 67.026156;"
-        onclick="openURL('PARTICIPANTS_PROFILE_LINK')"
+        onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"
       >
         <!-- Participants Icon -->
-        <a-image src="#participants-icon" onclick="openURL('PARTICIPANTS_PROFILE_LINK')"></a-image>
+        <a-image src="#participants-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
         <!-- Name of Participant -->
         <a-text position="-1 1 0" value="Participant's Name"></a-text>
         <!-- Distance from User -->
