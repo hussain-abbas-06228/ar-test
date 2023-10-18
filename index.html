@@ -80,15 +80,13 @@
         <a-text position="-1 1 0" value="Concessions Name"></a-text>
         <!-- Distance from User -->
         <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
+        <!-- Event listener for when the GPS entity is loaded -->
+        <a-entity gps-entity-place
+          latitude="24.855041"
+          longitude="67.024227"
+          onloaded="calculateAndDisplayDistance(this, 24.855041, 67.024227, USER_LATITUDE, USER_LONGITUDE);"
+        ></a-entity>
       </a-entity>
-
-      <script>
-        calculateAndDisplayDistance(
-          document.querySelector('[gps-entity-place]'),
-          24.855041,
-          67.024227
-        );
-      </script>
 
       <!-- Location for Friends -->
       <a-entity
@@ -103,15 +101,13 @@
         <a-text position="-1 1 0" value="Friend's Name"></a-text>
         <!-- Distance from User -->
         <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
+        <!-- Event listener for when the GPS entity is loaded -->
+        <a-entity gps-entity-place
+          latitude="24.853982"
+          longitude="67.024771"
+          onloaded="calculateAndDisplayDistance(this, 24.853982, 67.024771, USER_LATITUDE, USER_LONGITUDE);"
+        ></a-entity>
       </a-entity>
-
-      <script>
-        calculateAndDisplayDistance(
-          document.querySelectorAll('[gps-entity-place]')[1],
-          24.853982,
-          67.024771
-        );
-      </script>
 
       <!-- Location for Hospitality -->
       <a-entity
@@ -125,6 +121,12 @@
         <a-text position="-1 1 0" value="Restroom"></a-text>
         <!-- Distance from User -->
         <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
+        <!-- Event listener for when the GPS entity is loaded -->
+        <a-entity gps-entity-place
+          latitude="24.854645"
+          longitude="67.027000"
+          onloaded="calculateAndDisplayDistance(this, 24.854645, 67.027000, USER_LATITUDE, USER_LONGITUDE);"
+        ></a-entity>
       </a-entity>
 
       <!-- Location for Participants -->
@@ -140,14 +142,18 @@
         <a-text position="-1 1 0" value="Participant's Name"></a-text>
         <!-- Distance from User -->
         <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
+        <!-- Event listener for when the GPS entity is loaded -->
+        <a-entity gps-entity-place
+          latitude="24.855889"
+          longitude="67.026156"
+          onloaded="calculateAndDisplayDistance(this, 24.855889, 67.026156, USER_LATITUDE, USER_LONGITUDE);"
+        ></a-entity>
       </a-entity>
 
       <script>
-        calculateAndDisplayDistance(
-          document.querySelectorAll('[gps-entity-place]')[3],
-          24.855889,
-          67.026156
-        );
+        // Replace USER_LATITUDE and USER_LONGITUDE with the user's actual coordinates
+        const USER_LATITUDE = 0; // Replace with the actual user's latitude
+        const USER_LONGITUDE = 0; // Replace with the actual user's longitude
       </script>
     </a-scene>
   </body>
