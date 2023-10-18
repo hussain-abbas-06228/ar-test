@@ -36,28 +36,34 @@
 
       <!-- Function to calculate and display the distance -->
       <script>
-        function calculateAndDisplayDistance(locationEntity) {
-          const camera = document.querySelector('[camera]');
+        function calculateAndDisplayDistance(locationEntity, locationLat, locationLon) {
+          const camera = document.querySelector('[gps-camera]');
+          const distanceText = locationEntity.querySelector('.distance-text');
           const location = locationEntity.querySelector('[gps-entity-place]');
-          let check;
 
           location.addEventListener('gps-entity-place-added', () => {
-            let cameraPosition = camera.object3D.position;
-            let locationPosition = location.object3D.position;
-            let distance = cameraPosition.distanceTo(locationPosition);
-
-            check = setInterval(() => {
-              cameraPosition = camera.object3D.position;
-              locationPosition = location.object3D.position;
-              distance = cameraPosition.distanceTo(locationPosition);
+            const check = setInterval(() => {
+              const cameraPosition = camera.getAttribute('position');
+              const userLocation = new THREE.Vector3(
+                cameraPosition.x,
+                cameraPosition.y,
+                cameraPosition.z
+              );
+              const locationPosition = location.getAttribute('position');
+              const targetLocation = new THREE.Vector3(
+                locationPosition.x,
+                locationPosition.y,
+                locationPosition.z
+              );
+              const distance = userLocation.distanceTo(targetLocation);
 
               // Update the displayed distance in the text element
-              locationEntity.querySelector('.distance-text').setAttribute('value', 'Distance: ' + distance.toFixed(2) + ' meters');
+              distanceText.setAttribute('value', 'Distance: ' + distance.toFixed(2) + ' meters');
             }, 100);
-          });
 
-          location.addEventListener('gps-entity-place-removed', () => {
-            clearInterval(check);
+            location.addEventListener('gps-entity-place-removed', () => {
+              clearInterval(check);
+            });
           });
         }
       </script>
@@ -80,7 +86,7 @@
 
       <!-- Calculate and display distance for Concessions -->
       <script>
-        calculateAndDisplayDistance(document.querySelector('[gps-entity-place]'));
+        calculateAndDisplayDistance(document.querySelector('[gps-entity-place]'), 24.855041, 67.024227);
       </script>
 
       <!-- Location for Friends -->
@@ -101,7 +107,7 @@
 
       <!-- Calculate and display distance for Friends -->
       <script>
-        calculateAndDisplayDistance(document.querySelectorAll('[gps-entity-place]')[1]);
+        calculateAndDisplayDistance(document.querySelectorAll('[gps-entity-place]')[1], 24.853982, 67.024771);
       </script>
 
       <!-- Location for Hospitality -->
@@ -121,7 +127,7 @@
 
       <!-- Calculate and display distance for Hospitality -->
       <script>
-        calculateAndDisplayDistance(document.querySelectorAll('[gps-entity-place]')[2]);
+        calculateAndDisplayDistance(document.querySelectorAll('[gps-entity-place]')[2], 24.854645, 67.027000);
       </script>
 
       <!-- Location for Participants -->
@@ -142,7 +148,7 @@
 
       <!-- Calculate and display distance for Participants -->
       <script>
-        calculateAndDisplayDistance(document.querySelectorAll('[gps-entity-place]')[3]);
+        calculateAndDisplayDistance(document.querySelectorAll('[gps-entity-place]')[3], 24.855889, 67.026156);
       </script>
     </a-scene>
   </body>
