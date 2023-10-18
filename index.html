@@ -34,44 +34,38 @@
         }
       </script>
 
-      <!-- Custom A-Frame component to calculate distance -->
+      <!-- Calculate distance and update text element -->
       <script>
-        AFRAME.registerComponent('calculate-distance', {
-          init: function () {
-            const locationEl = this.el;
-            const cameraEl = document.querySelector('[gps-camera]');
-            const distanceTextEl = locationEl.querySelector('.distance-text');
+        function calculateAndDisplayDistance(locationEl, latitude, longitude) {
+          const cameraEl = document.querySelector('[gps-camera]');
+          const distanceTextEl = locationEl.querySelector('.distance-text');
 
-            function calculateDistance() {
-              const cameraPosition = cameraEl.getAttribute('position');
-              const userLocation = new THREE.Vector3(
-                cameraPosition.x,
-                cameraPosition.y,
-                cameraPosition.z
-              );
+          function updateDistance() {
+            const cameraPosition = cameraEl.getAttribute('position');
+            const userLocation = new THREE.Vector3(
+              cameraPosition.x,
+              cameraPosition.y,
+              cameraPosition.z
+            );
 
-              const locationPosition = locationEl.getAttribute('position');
-              const targetLocation = new THREE.Vector3(
-                locationPosition.x,
-                locationPosition.y,
-                locationPosition.z
-              );
+            const locationPosition = locationEl.getAttribute('position');
+            const targetLocation = new THREE.Vector3(
+              locationPosition.x,
+              locationPosition.y,
+              locationPosition.z
+            );
 
-              const distance = userLocation.distanceTo(targetLocation);
+            const distance = userLocation.distanceTo(targetLocation);
+            distanceTextEl.setAttribute('value', 'Distance: ' + distance.toFixed(2) + ' meters');
+          }
 
-              // Update the displayed distance in the text element
-              distanceTextEl.setAttribute('value', 'Distance: ' + distance.toFixed(2) + ' meters');
-            }
+          locationEl.addEventListener('gps-entity-place-added', updateDistance);
 
-            // Calculate distance on marker found
-            locationEl.addEventListener('gps-entity-place-added', calculateDistance);
-
-            // Clear the interval on marker lost
-            locationEl.addEventListener('gps-entity-place-removed', () => {
-              distanceTextEl.setAttribute('value', 'Distance: 0 meters');
-            });
-          },
-        });
+          locationEl.setAttribute('gps-entity-place', {
+            latitude: latitude,
+            longitude: longitude
+          });
+        }
       </script>
 
       <!-- Location for Concessions -->
@@ -79,9 +73,7 @@
         layout="type: line; margin: 0.5"
         look-at="[gps-camera]"
         scale="50 50 50"
-        gps-entity-place="latitude: 24.855041; longitude: 67.024227;"
         onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"
-        calculate-distance
       >
         <!-- Concessions Icon -->
         <a-image src="#concessions-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
@@ -91,14 +83,20 @@
         <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
       </a-entity>
 
+      <script>
+        calculateAndDisplayDistance(
+          document.querySelector('[gps-entity-place]'),
+          24.855041,
+          67.024227
+        );
+      </script>
+
       <!-- Location for Friends -->
       <a-entity
         layout="type: line; margin: 0.5"
         look-at="[gps-camera]"
         scale="50 50 50"
-        gps-entity-place="latitude: 24.853982; longitude: 67.024771;"
         onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"
-        calculate-distance
       >
         <!-- Friends Icon -->
         <a-image src="#friends-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
@@ -108,13 +106,19 @@
         <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
       </a-entity>
 
+      <script>
+        calculateAndDisplayDistance(
+          document.querySelectorAll('[gps-entity-place]')[1],
+          24.853982,
+          67.024771
+        );
+      </script>
+
       <!-- Location for Hospitality -->
       <a-entity
         layout="type: line; margin: 0.5"
         look-at="[gps-camera]"
         scale="50 50 50"
-        gps-entity-place="latitude: 24.854645; longitude: 67.027000;"
-        calculate-distance
       >
         <!-- Hospitality Icon -->
         <a-image src="#hospitality-icon"></a-image>
@@ -124,14 +128,20 @@
         <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
       </a-entity>
 
+      <script>
+        calculateAndDisplayDistance(
+          document.querySelectorAll('[gps-entity-place]')[2],
+          24.854645,
+          67.027000
+        );
+      </script>
+
       <!-- Location for Participants -->
       <a-entity
         layout="type: line; margin: 0.5"
         look-at="[gps-camera]"
         scale="50 50 50"
-        gps-entity-place="latitude: 24.855889; longitude: 67.026156;"
         onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"
-        calculate-distance
       >
         <!-- Participants Icon -->
         <a-image src="#participants-icon" onclick="openURLInNewWindow('https://ar-js-org.github.io/AR.js-Docs/')"></a-image>
@@ -140,6 +150,14 @@
         <!-- Distance from User -->
         <a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>
       </a-entity>
+
+      <script>
+        calculateAndDisplayDistance(
+          document.querySelectorAll('[gps-entity-place]')[3],
+          24.855889,
+          67.026156
+        );
+      </script>
     </a-scene>
   </body>
 </html>
