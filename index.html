@@ -28,6 +28,7 @@
       <!-- Location for Concessions -->
       <a-entity
         layout="type: line; margin: 1.5"
+        position="0 0 0"
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.855041; longitude: 67.024227;"
@@ -35,16 +36,17 @@
         <!-- Concessions Icon -->
         <a-image src="#concessions-icon"></a-image>
         <!-- Name of Establishment -->
-        <a-text value="Concessions Name"></a-text>
+        <a-text position="0 -20 0" value="Concessions Name"></a-text>
         <!-- Hyperlink to Menu or Website -->
-        <a-link href="CONCESSIONS_MENU_OR_WEBSITE_URL">Menu or Website</a-link>
+        <a-link position="0 -30 0" href="CONCESSIONS_MENU_OR_WEBSITE_URL">Menu or Website</a-link>
         <!-- Distance from User -->
-        <a-text value="Distance from user: DISTANCE"></a-text>
+        <a-text position="0 -40 0" value="Distance from user: DISTANCE"></a-text>
       </a-entity>
 
       <!-- Location for Friends -->
       <a-entity
         layout="type: line; margin: 1.5"
+        position="5 0 0"
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.853982; longitude: 67.024771;"
@@ -52,16 +54,17 @@
         <!-- Friends Icon -->
         <a-image src="#friends-icon"></a-image>
         <!-- Name of Friend -->
-        <a-text value="Friend's Name"></a-text>
+        <a-text position="0 -20 0" value="Friend's Name"></a-text>
         <!-- Hyperlink to Chat with Them -->
-        <a-link href="FRIENDS_CHAT_LINK">Chat with Friend</a-link>
+        <a-link position="0 -30 0" href="FRIENDS_CHAT_LINK">Chat with Friend</a-link>
         <!-- Distance from User -->
-        <a-text value="Distance from user: DISTANCE"></a-text>
+        <a-text position="0 -40 0" value="Distance from user: DISTANCE"></a-text>
       </a-entity>
 
       <!-- Location for Hospitality -->
       <a-entity
         layout="type: line; margin: 1.5"
+        position="10 0 0"
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.854645; longitude: 67.027000;"
@@ -69,14 +72,15 @@
         <!-- Hospitality Icon -->
         <a-image src="#hospitality-icon"></a-image>
         <!-- Type of Location (e.g., Restroom) -->
-        <a-text value="Restroom"></a-text>
+        <a-text position="0 -20 0" value="Restroom"></a-text>
         <!-- Distance from User -->
-        <a-text value="Distance from user: DISTANCE"></a-text>
+        <a-text position="0 -30 0" value="Distance from user: DISTANCE"></a-text>
       </a-entity>
 
       <!-- Location for Participants -->
       <a-entity
         layout="type: line; margin: 1.5"
+        position="15 0 0"
         look-at="[gps-camera]"
         scale="50 50 50"
         gps-entity-place="latitude: 24.855889; longitude: 67.026156;"
@@ -84,11 +88,11 @@
         <!-- Participants Icon -->
         <a-image src="#participants-icon"></a-image>
         <!-- Name of Participant -->
-        <a-text value="Participant's Name"></a-text>
+        <a-text position="0 -20 0" value="Participant's Name"></a-text>
         <!-- Link to Website or Profile -->
-        <a-link href="google.com">Visit Profile</a-link>
+        <a-link position="0 -30 0" href="PARTICIPANTS_PROFILE_LINK">Visit Profile</a-link>
         <!-- Distance from User -->
-        <a-text value="Distance from user: DISTANCE"></a-text>
+        <a-text position="0 -40 0" value="Distance from user: DISTANCE"></a-text>
       </a-entity>
     </a-scene>
   </body>
