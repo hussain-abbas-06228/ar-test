@@ -196,33 +196,26 @@
                 <img id="image4" src="assets/restaurant.png">
               </a-assets>
     
-              <!-- <a-image
-                    src="#image1"
-                    position="-9 2 -12"
+            <!-- make a text in front dont make entitiy just text -->
+            <a-text
+                    value="Jacob"
                     look-at="[gps-camera]"
-            scale="5 5 5"
-                ></a-image> -->
-    
-              <a-entity position="0 0 -5">
-                <a-text value="Front Text" look-at="[gps-camera]" position="0 5 0"></a-text>
-                <a-image src="#image1" look-at="[gps-camera]"></a-image>
-              </a-entity>
-    
-              <a-entity position="0 0 5">
-                <a-text value="Back Text" look-at="[gps-camera]" position="0 1 0"></a-text>
-                <a-image src="#image2" look-at="[gps-camera]"></a-image>
-              </a-entity>
-    
-              <a-entity position="-5 0 0">
-                <a-text value="Left Text" look-at="[gps-camera]" position="0 1 0"></a-text>
-                <a-image src="#image3" look-at="[gps-camera]"></a-image>
-              </a-entity>
-    
-              <a-entity position="5 0 0">
-                <a-text value="Right Text" look-at="[gps-camera]" position="0 1 0"></a-text>
-                <a-image src="#image4" look-at="[gps-camera]"></a-image>
-              </a-entity>
-    
+                    scale="50 50 50"
+                    position="9 2 -9"
+            ></a-text>
+            <!-- now make image right below the text -->
+            <a-image
+                src="#image1"
+                position="9 2 -12"
+                look-at="[gps-camera]"
+        scale="5 5 5"
+            ></a-image>
+            
+
+            
+
+
+
             <a-camera></a-camera>
         </a-scene>
     
