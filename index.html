@@ -1,219 +1,256 @@
-<!DOCTYPE html>
+<!-- <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE-edge" />
-    <title>GeoAR.js demo</title>
-    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-    <script src="https://cdn.rawgit.com/ngokevin/kframe/csstrigger/components/layout/src/index.js"></script>
-  </head>
+    <head>
+        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+    </head>
 
-  <body>
-    <a-scene
-      cursor='rayOrigin: mouse; fuse: true; fuseTimeout: 0;'
-      raycaster="objects: [gps-projected-entity-place];"
-      vr-mode-ui="enabled: true"
-      arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
-    >
-      <a-assets>
-        <!-- Load your images and icons here -->
-        <img id="concessions-icon" src="assets/menu.png" crossorigin="anonymous">
-        <img id="friends-icon" src="assets/friends.png" crossorigin="anonymous">
-        <img id="hospitality-icon" src="assets/hospitality.png" crossorigin="anonymous">
-        <img id="participants-icon" src="assets/participants.png" crossorigin="anonymous">
-      </a-assets>
+    <body style="margin: 0; overflow: hidden;">
+        <a-scene
+            vr-mode-ui="enabled: false;"
+            loading-screen="enabled: false;"
+            arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+            id="scene"
+            embedded
+            gesture-detector
+        >
+            <a-marker
+                id="animated-marker"
+                type="pattern"
+                preset="custom"
+                url="assets/marker.patt"
+                raycaster="objects: .clickable"
+                emitevents="true"
+                cursor="fuse: false; rayOrigin: mouse;"
+                id="markerA"
+            >
+                <a-image
+                    src="assets/asset.gif"
+                    scale="1 1 1"
+                    class="clickable"
+                    rotation="-90 0 0"
+                    gesture-handler
+                ></a-image>
+            </a-marker>
 
-      <a-camera gps-camera rotation-reader></a-camera>
-
-      <!-- Custom A-Frame component to calculate distance -->
-      <script>
-        AFRAME.registerComponent('calculate-distance', {
-          init: function () {
-            const locationEl = this.el;
-            const distanceTextEl = locationEl.querySelector('.distance-text');
-            this.userLocation = null; // Store user's location here
-
-            // Function to calculate distance and update the text
-            this.calculateDistance = () => {
-              if (!this.userLocation) {
-                // Wait for user location
-                return;
-              }
-
-              const locationPosition = locationEl.getAttribute('gps-entity-place');
-              if (!locationPosition) return; // Check if location position is defined
-
-              const targetLocation = {
-                latitude: locationPosition.latitude,
-                longitude: locationPosition.longitude
-              };
-
-              // Calculate the distance
-              const distance = calculateDistance(this.userLocation, targetLocation);
-              console.log('Distance:', distance.toFixed(2), 'miles');
-              distanceTextEl.setAttribute('value', 'Distance: ' + distance.toFixed(2) + ' miles');
-            };
-
-            // Calculate distance on marker found
-            locationEl.addEventListener('gps-entity-place-added', this.calculateDistance);
-
-            // Get the user's location
-            if ('geolocation' in navigator) {
-              navigator.geolocation.getCurrentPosition(position => {
-                this.userLocation = {
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude
-                };
-                // Call the function to calculate distance
-                this.calculateDistance();
-              }, error => {
-                console.error('Error getting user location:', error);
-              });
-            } else {
-              console.error('Geolocation is not supported in this browser.');
-            }
-          }
-        });
-
-        // Function to calculate distance between two coordinates in miles
-        function calculateDistance(coord1, coord2) {
-          const R = 3959; // Radius of the Earth in miles
-
-          // Convert latitude and longitude from degrees to radians
-          const lat1 = toRadians(coord1.latitude);
-          const lon1 = toRadians(coord1.longitude);
-          const lat2 = toRadians(coord2.latitude);
-          const lon2 = toRadians(coord2.longitude);
-
-          // Haversine formula
-          const dLat = lat2 - lat1;
-          const dLon = lon2 - lon1;
-          const a =
-            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-          const distance = R * c; // Distance in miles
-
-          return distance;
-        }
-
-        // Function to convert degrees to radians
-        function toRadians(degrees) {
-          return degrees * (Math.PI / 180);
-        }
-      </script>
-
-      <!-- Array of location objects with type and coordinates -->
-      <script>
-        const locations = [
-          {
-            type: 'Concessions',
-            latitude: 40.2795717,
-            longitude: -80.0729927,
-            icon: 'concessions-icon',
-            name: 'Concessions Name',
-            link: 'google.com',
-          },
-          {
-            type: 'Friends',
-            latitude: 24.853982,
-            longitude: 67.024771,
-            icon: 'friends-icon',
-            name: 'Friend\'s Name',
-            link: 'google.com',
-          },
-          {
-            type: 'Hospitality',
-            latitude: 40.2832730,
-            longitude: -80.0538386,
-            icon: 'hospitality-icon',
-            name: 'Restroom',
-          },
-          {
-            type: 'Participant',
-            latitude: 24.855889,
-            longitude: 67.026156,
-            icon: 'participants-icon',
-            name: 'Participant\'s Name',
-            link: 'google.com',
-          },
-          
-          
-          {
-            type: 'Concessions',
-            latitude: 40.722287,
-            longitude:  -73.994578,
-            icon: 'concessions-icon',
-            name: 'Concessions Name',
-            link: 'google.com',
-          },
-          {
-            type: 'Friends',
-            latitude: 40.722192, 
-            longitude: -73.995056,
-            icon: 'friends-icon',
-            name: 'Friend\'s Name',
-            link: 'google.com',
-          },
-          {
-            type: 'Hospitality',
-            latitude: 40.722080, 
-            longitude: -73.994794,
-            icon: 'hospitality-icon',
-            name: 'Restroom',
-          },
-          {
-            type: 'Participant',
-            latitude: 40.722149, 
-            longitude: -73.994539,
-            icon: 'participants-icon',
-            name: 'Participant\'s Name',
-            link: 'google.com',
-          },
-          
-          
-          
-          
-          
-        ];
-      </script>
-
-      <!-- Create entities for each location -->
-      <a-entity id="locations"></a-entity>
-
-      <script>
-        // Reference to the locations container
-        const locationsContainer = document.getElementById('locations');
-
-        // Loop through the locations array and create entities
-        locations.forEach(location => {
-          const entity = document.createElement('a-entity');
-          entity.setAttribute('layout', 'type: line; margin: 0.5');
-          entity.setAttribute('look-at', '[gps-camera]');
-          entity.setAttribute('scale', '50 50 50');
-          entity.setAttribute('gps-entity-place', {
-            latitude: location.latitude,
-            longitude: location.longitude,
-          });
-          entity.setAttribute('calculate-distance', '');
-
-          let htmlContent = `<a-image src="#${location.icon}"></a-image>`;
-          htmlContent += `<a-text position="-1 1 0" value="${location.name}"></a-text>`;
-
-          if (location.type === 'Concessions' || location.type === 'Friends') {
-            // Add a hyperlink for Concessions and Friends
-            htmlContent += `<a-link href="${location.link}" text=""></a-link>`;
-          }
-
-          // Add a distance text element
-          htmlContent += `<a-text class="distance-text" position="-1 -1 0" value="Distance: 0 meters"></a-text>`;
-
-          entity.innerHTML = htmlContent;
-          locationsContainer.appendChild(entity);
-        });
-      </script>
-    </a-scene>
-  </body>
+            <a-entity camera></a-entity>
+        </a-scene>
+    </body>
 </html>
+ -->
+
+ <!-- <!doctype html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+    </head>
+
+    <body style="margin: 0; overflow: hidden;">
+        <a-scene
+            vr-mode-ui="enabled: false;"
+            loading-screen="enabled: false;"
+            arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+            id="scene"
+            embedded
+            gesture-detector
+        >
+            <a-marker
+                id="animated-marker"
+                type="pattern"
+                preset="custom"
+                url="assets/marker.patt"
+                raycaster="objects: .clickable"
+                emitevents="true"
+                cursor="fuse: false; rayOrigin: mouse;"
+                id="markerA"
+            >
+                <a-image
+                    src="https://static.vecteezy.com/system/resources/previews/009/393/369/non_2x/pin-icon-sign-symbol-design-free-png.png"
+                    scale="1 1 1"
+                    class="clickable"
+                    rotation="-90 0 0"
+                    gesture-handler
+                ></a-image>
+            </a-marker>
+
+            <a-entity camera></a-entity>
+        </a-scene>
+    </body>
+</html> -->
+
+
+<!-- <!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+        <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    </head>
+
+    <body style="margin: 0; overflow: hidden;">
+        <a-scene
+            embedded
+            loading-screen="enabled: false;"
+            arjs="sourceType: webcam; debugUIEnabled: false;"
+        >
+                <a-image
+                    src="https://static.vecteezy.com/system/resources/previews/009/393/369/non_2x/pin-icon-sign-symbol-design-free-png.png"
+                    look-at="[gps-camera]"
+                    scale="5 5 5"
+                    gps-entity-place="latitude: 24.8548894; longitude: 67.0253489;"
+                ></a-image>
+
+            <a-camera gps-camera rotation-reader></a-camera>
+        </a-scene>
+    </body>
+</html> -->
+
+
+
+
+
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+        <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
+        <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+        
+    </head>
+
+    <body style="margin: 0; overflow: hidden;">
+        <div id="demo"></div>
+        
+        <a-scene
+            embedded
+            arjs="sourceType: webcam; debugUIEnabled: true;"
+        >
+          <a-assets>
+            <img id="toilet" src="assets/toilet-.png" crossorigin="anonymous">
+            <img id="restaurant" src="assets/restaurant.png" crossorigin="anonymous">
+            <img id="gp" src="assets/golf-player.png" crossorigin="anonymous">
+            <img id="gf" src="assets/golf-field.png" crossorigin="anonymous">
+            <img id="friends" src="assets/friends.png" crossorigin="anonymous">
+            <img id="hospitality" src="assets/hospitality.png" crossorigin="anonymous">
+            <img id="menu" src="assets/menu.png" crossorigin="anonymous">
+            <img id="participants" src="assets/participants.png" crossorigin="anonymous">
+
+              
+          </a-assets>
+            <a-text
+                    value="Jacob"
+                    look-at="[gps-camera]"
+                    scale="50 50 50"
+                    position="9 2 -9"
+            ></a-text>
+            <a-text
+                    value="400 meters away"
+                    look-at="[gps-camera]"
+                    scale="50 50 50"
+                    position="8 2 -9"
+            ></a-text>
+
+            <a-image
+                src="#friends"
+                position="12 2 -9"
+                look-at="[gps-camera]"
+        scale="5 5 5"
+            ></a-image>
+
+            <a-image
+                src="#hospitality"
+                position="-9 2 -12"
+                look-at="[gps-camera]"
+        scale="5 5 5"
+            ></a-image>
+
+            <a-image
+                src="#menu"
+                position="10 2 8"
+                look-at="[gps-camera]"
+        scale="5 5 5"
+            ></a-image>
+
+            <a-image
+                src="#participants"
+                position="-5 2 11"look-at="[gps-camera]"
+                scale="5 5 5"
+            ></a-image>
+
+            
+            <a-entity position="1 0 0" scale="3 3 3" text="value: HELLO;color:black"></a-entity>
+
+            <a-camera></a-camera>
+        </a-scene>
+
+        <script>
+            
+            alert('test');
+            document.querySelector('#markerImage').addEventListener('loaded', () => {
+                console.log('Image has been loaded!');
+            });
+
+
+
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+            } else {
+                alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
+            }
+
+
+            function successFunction(position) {
+                var lat = position.coords.latitude;
+                var long = position.coords.longitude;
+                alert('Your latitude is :'+lat+' and longitude is '+long);
+            }
+
+            function errorFunction(error) {
+                console.log(error);
+            }
+
+
+        </script>
+    </body>
+</html>
+
+
+<!-- <!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+        <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    </head>
+
+    <body style="margin: 0; overflow: hidden;">
+        <a-scene
+            embedded
+            arjs="sourceType: webcam; debugUIEnabled: false;"
+        >
+            <a-entity
+                geometry="primitive: plane; height: 1.5; width: 1.5"
+                material="shader: gif; src: url(assets/asset.gif)"
+                position="-5 -5 4"
+                scale="1 1 1"
+            ></a-entity>
+
+            <a-camera></a-camera>
+        </a-scene>
+    </body>
+</html> -->
+
